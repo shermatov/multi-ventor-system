@@ -2,7 +2,9 @@ package com.shermatov.ecommerce.domain;
 
 import com.shermatov.ecommerce.domain.base.BaseEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,8 +15,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
+@Table(name = "brand")
 public class Brand extends BaseEntity {
 
-    @OneToMany(mappedBy = "brand")
+    @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
     private List<Product> products;
 }

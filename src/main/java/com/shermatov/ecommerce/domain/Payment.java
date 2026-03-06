@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "payment")
 public class Payment extends BaseEntity {
 
     @OneToOne
