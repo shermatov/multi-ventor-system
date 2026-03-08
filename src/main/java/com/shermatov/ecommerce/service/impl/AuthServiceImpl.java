@@ -1,9 +1,17 @@
 package com.shermatov.ecommerce.service.impl;
 
 import com.shermatov.ecommerce.domain.User;
+import com.shermatov.ecommerce.dto.request.LoginRequestDTO;
+import com.shermatov.ecommerce.dto.request.RegisterRequestDTO;
+import com.shermatov.ecommerce.dto.response.LoginResponseDTO;
+import com.shermatov.ecommerce.dto.response.UserResponseDTO;
+import com.shermatov.ecommerce.exception.EmailAlreadyUsedException;
 import com.shermatov.ecommerce.repository.UserRepository;
+import com.shermatov.ecommerce.security.JwtService;
 import com.shermatov.ecommerce.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,11 +37,11 @@ public class AuthServiceImpl implements AuthService {
         user.setLastName(request.getLastName());
 
         User saved = userRepository.save(user);
-        return new UserResponse(saved.getEmail());
+        return new UserResponseDTO(saved.getEmail(), saved.getPassword(), saved.getFirstName(), saved.getLastName());
     }
 
     @Override
-    public LoginResponseDTO login(LoginRequestDTO request) {
+    public LoginResponseDTO login(LoginRequestDTO request) throws BadCredentialsException {
         User user = userRepository.findByEmailAndDeletedAtIsNull(request.getEmail())
                 .orElseThrow(() -> new BadCredentialsException("Invalid credentials"));
 
@@ -42,6 +50,6 @@ public class AuthServiceImpl implements AuthService {
         }
 
         String token = jwtService.generateToken(user);
-        return new LoginResponseDto(token);
+        return new LoginResponseDTO(token);
     }
 }

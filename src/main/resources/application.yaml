@@ -1,14 +1,54 @@
 spring:
   application:
-    name: Ecommerce
+    name: car-parts
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/ecommerse
-    username: postgres
-    password: postgres
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    hikari:
+      connection-timeout: 10000
+      maximum-pool-size: 5
+
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
+    show-sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    validate-on-migrate: true
+    out-of-order: false
+
+  mail:
+    host: ${SMTP_HOST:}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USER:}
+    password: ${SMTP_PASS:}
     properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: ${PORT:8080}
+
+jwt:
+  secret: ${JWT_SECRET:test-dummy-jwt-token}
+  expiration: 1800000
+
+app:
+  cors:
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:3000}
+
+  frontend:
+    base-url: ${FRONTEND_BASE_URL:http://localhost:3000}
+    reset-password-path: ${RESET_PASSWORD_PATH:/resetpassword}
+
+  email:
+    enabled: ${EMAIL_ENABLED:false}
+    from: ${EMAIL_FROM:noreply.m01taskmanager@gmail.com}

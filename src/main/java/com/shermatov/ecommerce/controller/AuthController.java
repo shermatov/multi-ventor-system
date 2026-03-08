@@ -1,5 +1,14 @@
 package com.shermatov.ecommerce.controller;
 
+import com.shermatov.ecommerce.dto.request.ForgotPasswordRequestDTO;
+import com.shermatov.ecommerce.dto.request.LoginRequestDTO;
+import com.shermatov.ecommerce.dto.request.RegisterRequestDTO;
+import com.shermatov.ecommerce.dto.request.ResetPasswordRequestDTO;
+import com.shermatov.ecommerce.dto.response.LoginResponseDTO;
+import com.shermatov.ecommerce.dto.response.MessageResponseDTO;
+import com.shermatov.ecommerce.dto.response.UserResponseDTO;
+import com.shermatov.ecommerce.service.AuthService;
+import com.shermatov.ecommerce.service.PasswordResetService;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -7,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -15,32 +24,38 @@ public class AuthController {
     private final PasswordResetService passwordResetService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(
-            @Valid @RequestBody RegisterRequest request) {
-
-        UserResponse response = authService.register(request);
+    public ResponseEntity<UserResponseDTO> register(
+            @Valid @RequestBody RegisterRequestDTO request) {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(response);
+                .body(authService.register(request));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto loginRequestDto)
-    {
-        LoginResponseDto response = authService.login(loginRequestDto);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<LoginResponseDTO> login(
+            @Valid @RequestBody LoginRequestDTO request) {
+
+        return ResponseEntity.ok(authService.login(request));
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<MessageResponse> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request){
+    public ResponseEntity<MessageResponseDTO> forgotPassword(
+            @Valid @RequestBody ForgotPasswordRequestDTO request) {
+
         passwordResetService.forgotPassword(request.email());
-        return ResponseEntity.ok(new MessageResponse("Password reset link will be sent in few minutes."));
+
+        return ResponseEntity.ok(
+                new MessageResponseDTO("Password reset link will be sent in a few minutes."));
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<MessageResponse> resetPassword(@Valid @RequestBody ResetPasswordRequest request){
+    public ResponseEntity<MessageResponseDTO> resetPassword(
+            @Valid @RequestBody ResetPasswordRequestDTO request) {
+
         passwordResetService.resetPassword(request.token(), request.newPassword());
-        return ResponseEntity.ok(new MessageResponse("Password has been reset successfully"));
+
+        return ResponseEntity.ok(
+                new MessageResponseDTO("Password has been reset successfully"));
     }
 }

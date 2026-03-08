@@ -3,12 +3,14 @@ package com.shermatov.ecommerce.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shermatov.ecommerce.domain.base.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Getter
@@ -18,11 +20,12 @@ import java.util.List;
 @Table (name = "users")
 public class User extends BaseEntity implements UserDetails {
 
-    public User(String email, String password, String firstName, String lastName) {
+    public User(String email, String password, String firstName, String lastName, Role role) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.role = role;
     }
 
     @Override
@@ -44,8 +47,8 @@ public class User extends BaseEntity implements UserDetails {
     private String lastName;
 
     @Enumerated(EnumType.STRING)
-    @Column
-    private Role role;
+    @Column(nullable = false)
+    private Role role = Role.CUSTOMER;
 
     @Override
     public String getPassword() {
