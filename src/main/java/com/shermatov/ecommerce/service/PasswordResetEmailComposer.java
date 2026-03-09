@@ -16,8 +16,8 @@ public class PasswordResetEmailComposer {
 
     public EmailMessage compose(String to, UUID token) {
         String link = UriComponentsBuilder
-                .fromUriString(frontend.baseUrl())
-                .path(frontend.resetPasswordPath())
+                .fromUriString(frontend.getBaseUrl())
+                .path(frontend.getResetPasswordPath())
                 .queryParam("token", token.toString())
                 .build()
                 .toUriString();

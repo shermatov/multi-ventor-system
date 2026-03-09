@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public ProductResponseDTO createProduct(Long shopId, ProductRequestDTO request) {
-        Shop shop = shopRepository.findById(shopId)
+        Shop shop = shopRepository.findByUserId(shopId)
                 .orElseThrow(() -> new ResourceNotFoundException("Shop not found"));
 
         Category category = categoryRepository.findById(request.getCategoryId())

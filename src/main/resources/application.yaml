@@ -1,6 +1,6 @@
 spring:
   application:
-    name: car-parts
+    name: multi-vendor-platform
 
   datasource:
     url: ${DB_URL}

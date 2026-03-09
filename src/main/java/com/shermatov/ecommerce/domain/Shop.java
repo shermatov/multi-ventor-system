@@ -17,7 +17,7 @@ import java.util.List;
 @Table(name = "shop")
 public class Shop extends BaseEntity {
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private User user;
 
