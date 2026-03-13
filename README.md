@@ -147,7 +147,7 @@ http://localhost:8080/swagger-ui/index.html
 ### 1. Clone the repository
 
 ```
-git clone https://github.com/YOUR_USERNAME/multi-vendor-platform.git
+git clone https://github.com/shermatov/multi-ventor-system.git
 cd multi-vendor-platform
 ```
 
@@ -183,12 +183,3 @@ mvn spring-boot:run
 * Email notifications
 * Recommendation system
 
----
-
-## Author
-
-**Aibek Shermatov**
-
-Computer Engineer | Java Backend Developer
-
-Poland 🇵🇱 | Kyrgyzstan 🇰🇬
