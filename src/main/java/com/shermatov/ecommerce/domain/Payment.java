@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 public class Payment extends BaseEntity {
 
     @OneToOne
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
     private BigDecimal amount;

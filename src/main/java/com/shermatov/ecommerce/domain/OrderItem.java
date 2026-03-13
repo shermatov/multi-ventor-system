@@ -30,7 +30,4 @@ public class OrderItem {
 
     private Integer quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "shop_id", insertable = false, updatable = false)
-    private Shop shop;
 }
