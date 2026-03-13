@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static com.shermatov.ecommerce.domain.Role.CUSTOMER;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor

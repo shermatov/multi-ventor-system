@@ -98,8 +98,12 @@ public class SecurityConfig {
                                 "/api/auth/forgot-password",
                                 "/api/auth/reset-password",
                                 "/swagger-ui/**",
-                                "/v3/api-docs/**"
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml"
+
                         ).permitAll()
+
 
                         /* =======================
                            ADMIN-ONLY ENDPOINTS
@@ -117,14 +121,14 @@ public class SecurityConfig {
                            ======================= */
                         .requestMatchers(
                                 "/api/shops/**"
-                        ).hasAnyRole("USER", "ADMIN")
+                        ).hasAnyRole("CLIENT", "ADMIN", "VENDOR")
 
                         /* =======================
                            PRODUCT ENDPOINTS
                            ======================= */
                         .requestMatchers(
                                 "/api/products/**"
-                        ).hasAnyRole("USER", "ADMIN")
+                        ).hasAnyRole("CLIENT", "ADMIN", "VENDOR")
 
                         /* =======================
                            EVERYTHING ELSE

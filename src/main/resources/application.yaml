@@ -14,6 +14,7 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: true
+    open-in-view: false
 
   flyway:
     enabled: true
@@ -51,4 +52,4 @@ app:
 
   email:
     enabled: ${EMAIL_ENABLED:false}
-    from: ${EMAIL_FROM:noreply.m01taskmanager@gmail.com}
+    from: ${EMAIL_FROM:noreply.shermatov@gmail.com}
