@@ -1,6 +1,7 @@
 package com.shermatov.ecommerce.service;
 
 import com.shermatov.ecommerce.domain.User;
+import com.shermatov.ecommerce.dto.request.UserProfileUpdateDTO;
 import com.shermatov.ecommerce.dto.request.UserUpdateRequestDTO;
 import com.shermatov.ecommerce.dto.response.UserResponseDTO;
 import org.springframework.data.domain.Page;
@@ -17,4 +18,7 @@ public interface UserService {
     void delete(Long id);
 
     UserResponseDTO toResponse(User user);
+
+    User updateProfile(Long id, UserProfileUpdateDTO dto);
+
 }

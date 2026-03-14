@@ -2,6 +2,7 @@ package com.shermatov.ecommerce.service.impl;
 
 import com.shermatov.ecommerce.domain.Role;
 import com.shermatov.ecommerce.domain.User;
+import com.shermatov.ecommerce.dto.request.UserProfileUpdateDTO;
 import com.shermatov.ecommerce.dto.request.UserUpdateRequestDTO;
 import com.shermatov.ecommerce.dto.response.UserResponseDTO;
 import com.shermatov.ecommerce.exception.ResourceNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -37,21 +39,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public User updateProfile(Long id, UserProfileUpdateDTO request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        applyBasicUpdates(
+                user,
+                request.getFirstName(),
+                request.getLastName(),
+                request.getPassword()
+        );
+
+        return userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
     public UserResponseDTO update(Long id, UserUpdateRequestDTO request) {
 
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setName(request.getFirstName() + " " + request.getLastName());
+        applyBasicUpdates(
+                user,
+                request.getFirstName(),
+                request.getLastName(),
+                request.getPassword()
+        );
 
-        // update password if provided
-        if (request.getPassword() != null && !request.getPassword().isBlank()) {
-            user.setPassword(passwordEncoder.encode(request.getPassword()));
-        }
-
-        // update role if provided
         if (request.getRole() != null) {
             try {
                 user.setRole(Role.valueOf(request.getRole()));
@@ -64,9 +80,8 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        User saved = userRepository.save(user);
-
-        return toResponse(saved);
+        userRepository.save(user);
+        return toResponse(user);
     }
 
     @Override
@@ -87,4 +102,16 @@ public class UserServiceImpl implements UserService {
                 user.getRole()
         );
     }
+
+    private void applyBasicUpdates(User user, String firstName, String lastName, String password) {
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setName(firstName + " " + lastName);
+
+        if (password != null && !password.isBlank()) {
+            user.setPassword(passwordEncoder.encode(password));
+        }
+    }
+
+
 }

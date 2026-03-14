@@ -1,4 +1,5 @@
 package com.shermatov.ecommerce.dto.request;
+
 import com.shermatov.ecommerce.security.PasswordConstraints;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
@@ -9,9 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-public class UserUpdateRequestDTO {
+@AllArgsConstructor
+public class UserProfileUpdateDTO {
 
     @Nullable
     @Size(
@@ -25,13 +26,11 @@ public class UserUpdateRequestDTO {
     )
     private String password;
 
-    @NotBlank(message = "Name can not be null or blank.")
-    @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters.")
+    @NotBlank(message = "First name cannot be blank.")
+    @Size(min = 2, max = 50)
     private String firstName;
 
-    @NotBlank(message = "Name can not be null or blank.")
-    @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters.")
+    @NotBlank(message = "Last name cannot be blank.")
+    @Size(min = 2, max = 50)
     private String lastName;
-
-    private String role;
 }
