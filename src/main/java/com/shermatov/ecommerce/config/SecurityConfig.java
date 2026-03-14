@@ -93,46 +93,60 @@ public class SecurityConfig {
                            PUBLIC ENDPOINTS
                            ======================= */
                         .requestMatchers(
-                                "/api/auth/login",
-                                "/api/auth/register",
-                                "/api/auth/forgot-password",
-                                "/api/auth/reset-password",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
+                                "/api/auth/**",
                                 "/v3/api-docs/**",
-                                "/v3/api-docs.yaml"
-
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
                         ).permitAll()
 
 
-                        /* =======================
-                           ADMIN-ONLY ENDPOINTS
-                           ======================= */
-                        .requestMatchers(
-                                "/api/users",
-                                "/api/users/search",
-                                "/api/users/admins-only",
-                                "/api/users/{email}",
-                                "/api/users/users-only"
-                        ).hasRole("ADMIN")
 
                         /* =======================
-                           SHOP ENDPOINTS
+                           PUBLIC SHOP BROWSING
+                           (typical e-commerce behavior)
                            ======================= */
+
                         .requestMatchers(
+                                "/api/products",
+                                "/api/products/**",
+                                "/api/categories",
+                                "/api/categories/**",
+                                "/api/brands",
+                                "/api/brands/**",
+                                "/api/shops",
                                 "/api/shops/**"
+                        ).permitAll()
+
+                        /* =======================
+                           CUSTOMER FEATURES
+                           ======================= */
+
+                        .requestMatchers(
+                                "/api/cart/**",
+                                "/api/orders/**",
+                                "/api/payments/**"
                         ).hasAnyRole("CLIENT", "ADMIN", "VENDOR")
 
                         /* =======================
-                           PRODUCT ENDPOINTS
+                           USER PROFILE
                            ======================= */
+
                         .requestMatchers(
-                                "/api/products/**"
-                        ).hasAnyRole("CLIENT", "ADMIN", "VENDOR")
+                                "/api/users/me"
+                        ).authenticated()
+
+                        /* =======================
+                           ADMIN MANAGEMENT
+                           ======================= */
+
+                        .requestMatchers(
+                                "/api/users/**"
+                        ).hasRole("ADMIN")
 
                         /* =======================
                            EVERYTHING ELSE
                            ======================= */
+
                         .anyRequest().authenticated()
                 )
 
