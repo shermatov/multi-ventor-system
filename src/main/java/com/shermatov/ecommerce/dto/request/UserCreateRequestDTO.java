@@ -1,19 +1,18 @@
 package com.shermatov.ecommerce.dto.request;
 
+import com.shermatov.ecommerce.domain.Role;
 import com.shermatov.ecommerce.security.PasswordConstraints;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static com.shermatov.ecommerce.domain.Role.CUSTOMER;
-
-@Getter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserCreateRequestDTO {
 
     public UserCreateRequestDTO(String email, String password, String firstName, String lastName) {
@@ -44,6 +43,6 @@ public class UserCreateRequestDTO {
     @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters.")
     private String lastName;
 
-    private String role;
+    private Role role;
 
 }

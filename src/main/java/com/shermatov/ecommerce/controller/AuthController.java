@@ -2,7 +2,7 @@ package com.shermatov.ecommerce.controller;
 
 import com.shermatov.ecommerce.dto.request.ForgotPasswordRequestDTO;
 import com.shermatov.ecommerce.dto.request.LoginRequestDTO;
-import com.shermatov.ecommerce.dto.request.RegisterRequestDTO;
+import com.shermatov.ecommerce.dto.request.UserCreateRequestDTO;
 import com.shermatov.ecommerce.dto.request.ResetPasswordRequestDTO;
 import com.shermatov.ecommerce.dto.response.LoginResponseDTO;
 import com.shermatov.ecommerce.dto.response.MessageResponseDTO;
@@ -25,7 +25,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> register(
-            @Valid @RequestBody RegisterRequestDTO request) {
+            @Valid @RequestBody UserCreateRequestDTO request) {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

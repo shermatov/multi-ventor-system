@@ -2,7 +2,7 @@ package com.shermatov.ecommerce.service.impl;
 
 import com.shermatov.ecommerce.domain.User;
 import com.shermatov.ecommerce.dto.request.LoginRequestDTO;
-import com.shermatov.ecommerce.dto.request.RegisterRequestDTO;
+import com.shermatov.ecommerce.dto.request.UserCreateRequestDTO;
 import com.shermatov.ecommerce.dto.response.LoginResponseDTO;
 import com.shermatov.ecommerce.dto.response.UserResponseDTO;
 import com.shermatov.ecommerce.exception.EmailAlreadyUsedException;
@@ -25,7 +25,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public UserResponseDTO register(RegisterRequestDTO request) {
+    public UserResponseDTO register(UserCreateRequestDTO request) {
         if (userRepository.existsByEmailAndDeletedAtIsNull(request.getEmail())) {
             throw new EmailAlreadyUsedException("Email is already in use");
         }
@@ -35,9 +35,10 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
-
+        user.setName(request.getFirstName() + " " + request.getLastName());
+        user.setRole(request.getRole());
         User saved = userRepository.save(user);
-        return new UserResponseDTO(saved.getEmail(), saved.getPassword(), saved.getFirstName(), saved.getLastName());
+        return new UserResponseDTO(saved.getEmail(), saved.getFirstName(), saved.getLastName(), saved.getRole());
     }
 
     @Override

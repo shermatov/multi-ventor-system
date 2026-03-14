@@ -33,7 +33,7 @@ CREATE TABLE cart
     created_at  TIMESTAMP WITHOUT TIME ZONE             NOT NULL,
     updated_at  TIMESTAMP WITHOUT TIME ZONE             NOT NULL,
     deleted_at  TIMESTAMP WITHOUT TIME ZONE,
-    user_id     BIGINT,
+    user_id     BIGINT                                  NOT NULL,
     CONSTRAINT pk_cart PRIMARY KEY (id)
 );
 
@@ -47,7 +47,7 @@ CREATE TABLE cart_item
     deleted_at  TIMESTAMP WITHOUT TIME ZONE,
     cart_id     BIGINT                                  NOT NULL,
     product_id  BIGINT                                  NOT NULL,
-    quantity    INTEGER,
+    quantity    INTEGER                                 NOT NULL,
     CONSTRAINT pk_cart_item PRIMARY KEY (id)
 );
 
@@ -69,7 +69,6 @@ CREATE TABLE order_item
     product_id BIGINT,
     price      DECIMAL,
     quantity   INTEGER,
-    shop_id    BIGINT,
     CONSTRAINT pk_order_item PRIMARY KEY (id)
 );
 
@@ -107,7 +106,7 @@ CREATE TABLE payment
     created_at     TIMESTAMP WITHOUT TIME ZONE             NOT NULL,
     updated_at     TIMESTAMP WITHOUT TIME ZONE             NOT NULL,
     deleted_at     TIMESTAMP WITHOUT TIME ZONE,
-    order_id       BIGINT,
+    order_id       BIGINT                                  NOT NULL,
     amount         DECIMAL,
     payment_method VARCHAR(255),
     status         VARCHAR(255),
@@ -225,9 +224,6 @@ ALTER TABLE order_item
 
 ALTER TABLE order_item
     ADD CONSTRAINT FK_ORDER_ITEM_ON_PRODUCT FOREIGN KEY (product_id) REFERENCES product (id);
-
-ALTER TABLE order_item
-    ADD CONSTRAINT FK_ORDER_ITEM_ON_SHOP FOREIGN KEY (shop_id) REFERENCES shop (id);
 
 ALTER TABLE password_reset_tokens
     ADD CONSTRAINT FK_PASSWORD_RESET_TOKENS_ON_USER FOREIGN KEY (user_id) REFERENCES users (id);

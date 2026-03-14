@@ -1,5 +1,6 @@
 package com.shermatov.ecommerce.dto.response;
 
+import com.shermatov.ecommerce.domain.Role;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,9 @@ public class UserResponseDTO {
     @NotBlank(message = "First name is required")
     @Size(max = 50, message = "First name must not exceed 50 characters")
     private String firstName;
+    @NotBlank(message = "First name is required")
+    @Size(max = 50, message = "First name must not exceed 50 characters")
     private String lastName;
-    private String role;
+
+    private Role role;
 }

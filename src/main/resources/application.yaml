@@ -53,3 +53,7 @@ app:
   email:
     enabled: ${EMAIL_ENABLED:false}
     from: ${EMAIL_FROM:noreply.shermatov@gmail.com}
+
+springdoc:
+  api-docs:
+      enabled: false
