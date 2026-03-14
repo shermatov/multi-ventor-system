@@ -10,8 +10,10 @@ import com.shermatov.ecommerce.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -51,7 +53,15 @@ public class UserServiceImpl implements UserService {
 
         // update role if provided
         if (request.getRole() != null) {
-            user.setRole(Role.valueOf(request.getRole()));
+            try {
+                user.setRole(Role.valueOf(request.getRole()));
+            } catch (IllegalArgumentException ex) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "Invalid role: " + request.getRole(),
+                        ex
+                );
+            }
         }
 
         User saved = userRepository.save(user);
