@@ -24,4 +24,8 @@ public class ProductResponseDTO {
     @NotNull
     private Integer stock;
     private List<String> imageUrls;
+
+    private Double averageRating;
+
+    private Integer reviewCount;
 }

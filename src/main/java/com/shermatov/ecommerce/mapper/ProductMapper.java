@@ -21,6 +21,7 @@ public class ProductMapper {
         product.setPrice(request.getPrice());
         product.setStock(request.getStock());
 
+
         return product;
     }
 
@@ -38,6 +39,8 @@ public class ProductMapper {
                 .brandId(getBrandId(product))
                 .shopId(getShopId(product))
                 .imageUrls(getImageUrls(product))
+                .averageRating(product.getAverageRating())
+                .reviewCount(product.getReviewCount())
                 .build();
     }
 
