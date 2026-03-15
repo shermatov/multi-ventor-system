@@ -20,7 +20,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findOrdersByShopId(Long shopId);
 
     @Query("""
-        SELECT JPQLCOUNT(oi) > 0
+        SELECT COUNT(oi) > 0
         FROM OrderItem oi
         JOIN oi.order o
         WHERE o.user.id = :userId
