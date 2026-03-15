@@ -23,7 +23,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Double getAverageRating(Long productId);
 
     @Query("""
-                SELECT COUNT(r)
+                SELECT JPQLCOUNT(r)
                 FROM Review r
                 WHERE r.product.id = :productId
                 """)

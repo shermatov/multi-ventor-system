@@ -4,6 +4,7 @@ import com.shermatov.ecommerce.domain.Review;
 import com.shermatov.ecommerce.domain.User;
 import com.shermatov.ecommerce.dto.request.ReviewRequestDTO;
 import com.shermatov.ecommerce.service.ReviewService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class ReviewController {
 
     @PostMapping
     public Review createReview(
-            @RequestBody ReviewRequestDTO request,
+            @Valid @RequestBody ReviewRequestDTO request,
             @AuthenticationPrincipal User user
     ) {
         return reviewService.createReview(request, user);
