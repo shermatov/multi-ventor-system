@@ -40,18 +40,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User updateProfile(Long id, UserProfileUpdateDTO request) {
+    public UserResponseDTO updateProfile(Long id, UserProfileUpdateDTO request) {
+
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        applyBasicUpdates(
+        boolean changed = applyBasicUpdates(
                 user,
                 request.getFirstName(),
                 request.getLastName(),
-                request.getPassword()
+                request.getEmail()
         );
 
-        return userRepository.save(user);
+        if (!changed) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "No changes detected"
+            );
+        }
+
+        userRepository.save(user);
+
+        return toResponse(user);
     }
 
     @Override
@@ -61,16 +71,22 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        applyBasicUpdates(
+        boolean changed = applyBasicUpdates(
                 user,
                 request.getFirstName(),
                 request.getLastName(),
-                request.getPassword()
+                request.getEmail()
         );
 
         if (request.getRole() != null) {
             try {
-                user.setRole(Role.valueOf(request.getRole()));
+                Role newRole = Role.valueOf(request.getRole());
+
+                if (!newRole.equals(user.getRole())) {
+                    user.setRole(newRole);
+                    changed = true;
+                }
+
             } catch (IllegalArgumentException ex) {
                 throw new ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
@@ -80,7 +96,15 @@ public class UserServiceImpl implements UserService {
             }
         }
 
+        if (!changed) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "No changes detected"
+            );
+        }
+
         userRepository.save(user);
+
         return toResponse(user);
     }
 
@@ -103,14 +127,30 @@ public class UserServiceImpl implements UserService {
         );
     }
 
-    private void applyBasicUpdates(User user, String firstName, String lastName, String password) {
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setName(firstName + " " + lastName);
+    private boolean applyBasicUpdates(User user, String firstName, String lastName, String email) {
 
-        if (password != null && !password.isBlank()) {
-            user.setPassword(passwordEncoder.encode(password));
+        boolean changed = false;
+
+        if (firstName != null && !firstName.equals(user.getFirstName())) {
+            user.setFirstName(firstName);
+            changed = true;
         }
+
+        if (lastName != null && !lastName.equals(user.getLastName())) {
+            user.setLastName(lastName);
+            changed = true;
+        }
+
+        if (firstName != null && lastName != null) {
+            user.setName(firstName + " " + lastName);
+        }
+
+        if (email != null && !email.equals(user.getEmail())) {
+            user.setEmail(email);
+            changed = true;
+        }
+
+        return changed;
     }
 
 

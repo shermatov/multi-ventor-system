@@ -2,6 +2,7 @@ package com.shermatov.ecommerce.dto.request;
 
 import com.shermatov.ecommerce.security.PasswordConstraints;
 import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -14,17 +15,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserProfileUpdateDTO {
 
-    @Nullable
-    @Size(
-            min = PasswordConstraints.MIN_LENGTH,
-            max = PasswordConstraints.MAX_LENGTH,
-            message = PasswordConstraints.ERROR_MESSAGE
-    )
-    @Pattern(
-            regexp = PasswordConstraints.REGEX,
-            message = PasswordConstraints.ERROR_MESSAGE
-    )
-    private String password;
+    @NotBlank(message = "Email can not be null or blank.")
+    @Email(message = "Pls provide a valid email.")
+    private String email;
 
     @NotBlank(message = "First name cannot be blank.")
     @Size(min = 2, max = 50)

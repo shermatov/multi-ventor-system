@@ -19,6 +19,6 @@ public interface UserService {
 
     UserResponseDTO toResponse(User user);
 
-    User updateProfile(Long id, UserProfileUpdateDTO dto);
+    UserResponseDTO updateProfile(Long id, UserProfileUpdateDTO dto);
 
 }

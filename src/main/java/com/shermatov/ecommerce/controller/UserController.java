@@ -1,5 +1,6 @@
 package com.shermatov.ecommerce.controller;
 
+import com.shermatov.ecommerce.dto.request.UserProfileUpdateDTO;
 import com.shermatov.ecommerce.dto.request.UserUpdateRequestDTO;
 import com.shermatov.ecommerce.dto.response.UserResponseDTO;
 import com.shermatov.ecommerce.domain.User;
@@ -43,9 +44,9 @@ public class UserController {
     @PutMapping("/me")
     public ResponseEntity<UserResponseDTO> updateProfile(
             @AuthenticationPrincipal User user,
-            @RequestBody @Valid UserUpdateRequestDTO request) {
+            @RequestBody @Valid UserProfileUpdateDTO request) {
 
-        UserResponseDTO updated = userService.update(user.getId(), request);
+        UserResponseDTO updated = userService.updateProfile(user.getId(), request);
         return ResponseEntity.ok(updated);
     }
 

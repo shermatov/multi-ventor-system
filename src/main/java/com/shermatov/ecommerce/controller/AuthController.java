@@ -53,9 +53,17 @@ public class AuthController {
     public ResponseEntity<MessageResponseDTO> resetPassword(
             @Valid @RequestBody ResetPasswordRequestDTO request) {
 
-        passwordResetService.resetPassword(request.token(), request.newPassword());
+        if (!request.newPassword().equals(request.confirmPassword())) {
+            throw new IllegalArgumentException("Passwords do not match");
+        }
+
+        passwordResetService.resetPassword(
+                request.token(),
+                request.newPassword()
+        );
 
         return ResponseEntity.ok(
-                new MessageResponseDTO("Password has been reset successfully"));
+                new MessageResponseDTO("Password has been reset successfully")
+        );
     }
 }
