@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -53,9 +54,20 @@ public class AuthController {
     public ResponseEntity<MessageResponseDTO> resetPassword(
             @Valid @RequestBody ResetPasswordRequestDTO request) {
 
-        passwordResetService.resetPassword(request.token(), request.newPassword());
+        if (!request.newPassword().equals(request.confirmPassword())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Passwords do not match"
+            );
+        }
+
+        passwordResetService.resetPassword(
+                request.token(),
+                request.newPassword()
+        );
 
         return ResponseEntity.ok(
-                new MessageResponseDTO("Password has been reset successfully"));
+                new MessageResponseDTO("Password has been reset successfully")
+        );
     }
 }

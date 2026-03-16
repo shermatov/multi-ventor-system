@@ -15,10 +15,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserCreateRequestDTO {
 
-    public UserCreateRequestDTO(String email, String password, String firstName, String lastName) {
-        this(email, password, firstName, lastName, null);
-    }
-
     @NotBlank(message = "Email can not be null or blank.")
     @Email(message = "Pls provide a valid email.")
     private String email;
