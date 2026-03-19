@@ -1,7 +1,9 @@
 package com.shermatov.ecommerce.controller;
 
-import com.shermatov.ecommerce.domain.User;
-import com.shermatov.ecommerce.dto.request.*;
+import com.shermatov.ecommerce.dto.request.ForgotPasswordRequestDTO;
+import com.shermatov.ecommerce.dto.request.LoginRequestDTO;
+import com.shermatov.ecommerce.dto.request.UserCreateRequestDTO;
+import com.shermatov.ecommerce.dto.request.ResetPasswordRequestDTO;
 import com.shermatov.ecommerce.dto.response.LoginResponseDTO;
 import com.shermatov.ecommerce.dto.response.MessageResponseDTO;
 import com.shermatov.ecommerce.dto.response.UserResponseDTO;
@@ -11,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -67,29 +68,6 @@ public class AuthController {
 
         return ResponseEntity.ok(
                 new MessageResponseDTO("Password has been reset successfully")
-        );
-    }
-
-    @PutMapping("/change-password")
-    public ResponseEntity<MessageResponseDTO> changePassword(
-            @AuthenticationPrincipal User user,
-            @Valid @RequestBody ChangePasswordRequestDTO request) {
-
-        if (!request.newPassword().equals(request.confirmPassword())) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Passwords do not match"
-            );
-        }
-
-        passwordResetService.changePassword(
-                user,
-                request.currentPassword(),
-                request.newPassword()
-        );
-
-        return ResponseEntity.ok(
-                new MessageResponseDTO("Password changed successfully")
         );
     }
 }

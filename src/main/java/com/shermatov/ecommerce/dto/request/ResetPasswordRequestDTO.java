@@ -22,6 +22,15 @@ public record ResetPasswordRequestDTO(
         )
         String newPassword,
 
-        @NotBlank(message = PasswordConstraints.ERROR_MESSAGE)
+        @NotBlank
+        @Size(
+                min = PasswordConstraints.MIN_LENGTH,
+                max = PasswordConstraints.MAX_LENGTH,
+                message = PasswordConstraints.ERROR_MESSAGE
+        )
+        @Pattern(
+                regexp = PasswordConstraints.REGEX,
+                message = PasswordConstraints.ERROR_MESSAGE
+        )
         String confirmPassword
 ) {}
